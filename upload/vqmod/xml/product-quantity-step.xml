@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<modification>
+<modification xmlns="https://github.com/iamjosan/product-quantity-step">
 	<id>Product Quantity Step</id>
 	<version>1.0</version>
 	<vqmver>2.4.X</vqmver>

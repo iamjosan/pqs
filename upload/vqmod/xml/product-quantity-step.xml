@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>Product Quantity Step</id>
+	<version>1.0</version>
+	<vqmver>2.4.X</vqmver>
+	<author>Josan Iracheta</author>
+	<file name="catalog/view/theme/*/template/product/product.tpl">
+		<operation info="Insert script to generate tooltip for quantity input" error="log">
+			<search position="before"><![CDATA[$('#button-cart')]]></search>
+			<add><![CDATA[
+			var inputQty = document.querySelector('input[name="quantity"]');
+			var valMsg;
+			$(inputQty).on('keyup input change focus',function(){
+				if(!inputQty.checkValidity()){
+					valMsg = inputQty.validationMessage;
+					this.dataset.title = valMsg;
+					this.dataset.originalTitle = valMsg;
+					this.title = valMsg;
+					$(this).tooltip('show');
+					this.focus();
+				}
+				else{
+					$(this).tooltip('hide');
+				}
+			});
+			]]></add>
+		</operation>
+		<operation info="Insert script snippet inside button-cart click function" error="log">
+			<search position="after" offset="0"><![CDATA[$('#button-cart')]]></search>
+			<add><![CDATA[
+			if(!inputQty.checkValidity()){
+				inputQty.focus();
+				return false;
+				}
+			]]></add>
+		</operation>
+		<operation info="Pass accurate quantity selector to JS script on cart-button click" error="log">
+			<search position="replace" offset="0"><![CDATA[.product-info input[type=\'text\']]]></search>
+			<add><![CDATA[.product-info input[name="quantity"]]]></add>
+		</operation>
+		<operation info="Insert JS script" error="log">
+			<search position="bottom"></search>
+			<add><![CDATA[
+				<script src="catalog/view/javascript/productQuantityStep.js"></script>
+			]]></add>
+		</operation>
+		<operation info="Insert input element that holds quantity step value" error="log">
+			<search position="bottom"></search>
+			<add><![CDATA[
+				<input type="hidden" id="pqs-value" value="<?php echo $quantity_step; ?>" />
+			]]></add>
+		</operation>
+		<operation info="Insert Bootstrap JS" error="log">
+			<search position="bottom"></search>
+			<add><![CDATA[<script src="catalog/view/javascript/jquery/bootstrap/bootstrap.min.js"></script>]]></add>
+		</operation>
+	</file>
+	<file name="catalog/model/catalog/product.php">
+		<operation info="Get module settings" error="log">
+			<search position="before" index="1"><![CDATA[
+				if ($query->num_rows) {
+			]]></search>
+			<add><![CDATA[
+				//get module settings from settings table
+				//set qty_step based on settings
+
+				$this->load->model('setting/setting');
+
+				$qty_step = $this->model_setting_setting->getSetting('product_quantity_step');
+
+				$step = array(
+					'data' => $qty_step[key($qty_step)] == 'quantity' || $qty_step[key($qty_step)] == 'minimum' ? $query->row[$qty_step[key($qty_step)]] : null,
+					'global' => $qty_step[key($qty_step)],
+					'manual' => $query->row['quantity_step']
+					);
+			]]></add>
+		</operation>
+		<operation info="Modify file to retrieve quantity_step from product table" error="log">
+			<search position="after"><![CDATA[
+				row['quantity'],
+			]]></search>
+			<add><![CDATA[
+				'quantity_step' => $step[key($qty_step)],
+			]]></add>
+		</operation>
+	</file>
+	<file name="catalog/controller/product/product.php">
+		<operation info="Modify file to set quantity_step variable that can be accessed on product.tpl" error="log">
+			<search position="after"><![CDATA[
+				$product_info['points'];
+			]]></search>
+			<add><![CDATA[
+				$this->data['quantity_step'] = $product_info['quantity_step'];
+			]]></add>
+		</operation>
+	</file>
+	<file name="admin/model/catalog/product.php">
+		<operation info="Allow admin product page to edit and insert quantity_step value" index="1,2" error="log">
+			<search position="iafter"><![CDATA[
+				quantity = '" . (int)$data['quantity'] . "'
+			]]></search>
+			<add><![CDATA[
+				,quantity_step = '".(int)$data['quantity_step']."'
+			]]></add>
+		</operation>
+	</file>
+	<file name="admin/controller/catalog/product.php">
+		<operation info="Append admin product page(form) quantity_step text" error="log">
+			<search position="after"><![CDATA[
+				get('entry_quantity');
+			]]></search>
+			<add><![CDATA[
+				$this->data['entry_quantity_step'] = 'Quantity Step';
+			]]></add>
+		</operation>
+		<operation info="Pass quantity-step from database to product_form page" error="log">
+			<search position="before" index="1"><![CDATA[
+			$this->load->model('localisation/stock_status');
+		]]></search>
+			<add><![CDATA[
+			
+				$this->data['quantity_step'] = $product_info['quantity_step'];
+			
+			]]></add>
+		</operation>
+	</file>
+	<file name="admin/view/template/catalog/product_form.tpl">
+		<operation info="Append quantity_step input option in admin product page" error="log">
+			<search position="bottom"><![CDATA[
+				<td><input type="text" name="minimum" value="<?php echo $minimum; ?>" size="2" /></td>
+            </tr>
+			]]></search>
+			<add><![CDATA[
+              <input id="pqs" type="text" name="quantity_step" value="<?php echo $quantity_step; ?>" size="2" data-entry="<?php echo $entry_quantity_step; ?>"/>
+			<script>
+			//move product-quantity-step input after minimum input
+			//window.addEventListener('load',function(){
+			var pqs = document.querySelector('#pqs');
+			var row = document.createElement('tr');
+			var entryCol = document.createElement('td');
+			entryCol.textContent = pqs.dataset.entry;
+			var inputCol = document.createElement('td');
+			inputCol.appendChild(pqs);
+			row.appendChild(entryCol);
+			row.appendChild(inputCol);
+			var min = document.querySelector('[name="minimum"]');
+			min = min.parentNode;
+			//this one will be the row parent
+			min = min.parentNode;
+			//insert pqs
+			min.insertAdjacentElement('afterend',row);
+			</script>
+			]]></add>
+		</operation>
+	</file>
+</modification>

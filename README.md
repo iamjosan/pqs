@@ -10,11 +10,11 @@ You will need the latest version of VQMod, jQuery, and your theme must use Boots
 ### Module Settings
 There are 3 module settings: "Manual", "Product Data", "Same For All Products".
 
-#### Manual
+#### * Manual
 This setting allows you to set the quantity-step value manually for each product in the 'Edit Product' page.
-#### Product Data
+#### * Product Data
 This setting allows you to set the quantity-step value to match each products' data value such as 'Minimum' or 'Quantity'. For example, if your products have a minimum quantity value of 10, then the quantity step value will be 10 as well.
-#### Same For All Products
+#### * Same For All Products
 This setting allows you to set one quantity-step value for all of your products.
 
 ## Author

@@ -38,7 +38,7 @@ window.addEventListener('load',function(){
 	*/
 
 	var cartBtn;
-	if(document.querySelector('#button-cart').tagName != 'INPUT'){
+	if(document.querySelector('#button-cart').tagName != 'INPUT' && document.querySelector('#button-cart').tagName != 'BUTTON'){
 		cartBtn = document.querySelector('#button-cart').querySelector('input');
 	}
 	else{

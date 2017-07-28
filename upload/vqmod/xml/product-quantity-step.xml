@@ -50,10 +50,6 @@
 				<input type="hidden" id="pqs-value" value="<?php echo $quantity_step; ?>" />
 			]]></add>
 		</operation>
-		<operation info="Insert Bootstrap JS" error="log">
-			<search position="bottom"></search>
-			<add><![CDATA[<script src="catalog/view/javascript/jquery/bootstrap/bootstrap.min.js"></script>]]></add>
-		</operation>
 	</file>
 	<file name="catalog/model/catalog/product.php">
 		<operation info="Get module settings" error="log">

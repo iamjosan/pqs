@@ -67,7 +67,7 @@ window.addEventListener('load',function(){
 	* THEN insert commonParentElement into New Form
 	*/
 	commonParent.insertAdjacentElement('beforebegin', newForm);
-	document.querySelector('#pqs-form').append(commonParent);
+	document.querySelector('#pqs-form').appendChild(commonParent);
 
 });
 

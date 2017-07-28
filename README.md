@@ -5,7 +5,7 @@ This Opencart module will allow you to set a quantity step value.
 First, upload all of the files included in the "upload" folder to your Opencart store. Second, install the module from the admin dashboard. Third, go into the "Product Quantity Step" module dashboard and set the module settings.
 
 ### Prerequisites
-You will need the latest version of VQMod, jQuery, and your theme must use Bootstrap. Compatible with Opencart 1.5.6.x.
+You will need the latest version of VQMod, jQuery, and your theme must use Bootstrap. **Compatible with Opencart 1.5.6.x.**
 
 ### Module Settings
 There are 3 module settings: "Manual", "Product Data", "Same For All Products".

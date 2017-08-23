@@ -50,6 +50,42 @@
 				<input type="hidden" id="pqs-value" value="<?php echo $quantity_step; ?>" />
 			]]></add>
 		</operation>
+		<operation info="Insert noscript tag" error="log">
+			<search position="bottom"></search>
+			<add><![CDATA[
+				<noscript>
+					<div><h1>Please enable JavaScript to use this site</h1></div>
+				</noscript>
+			]]></add>
+		</operation>
+	</file>
+	<file name="catalog/view/theme/*/template/common/header.tpl">
+		<operation info="Append noscript styles to page" error="log">
+			<search position="before"><![CDATA[</head>]]></search>
+			<add><![CDATA[
+			<style>
+			noscript div{
+				position:fixed;
+				z-index:999998;
+				background:#333;
+				opacity:0.9;
+				color:white;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+				text-align:center;
+				display:flex;
+				align-items:center;
+				justify-content:center;
+				}
+			noscript h1{
+				color:white !important;
+				z-index:999999;
+				}
+			</style>
+			]]></add>
+		</operation>
 	</file>
 	<file name="catalog/model/catalog/product.php">
 		<operation info="Get module settings" error="log">
